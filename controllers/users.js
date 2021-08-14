@@ -7,6 +7,8 @@ export const login = async (req, res) => {
 
     const { email, password } = req.body;
     try {
+        if (!email || !password)
+            return res.status(400).json({ message: "Incomplete request" })
         const existingUser = await User.findOne({ email });
 
         if (!existingUser) return res.status(404).json({ message: "User doesnt exist" })
@@ -24,7 +26,7 @@ export const login = async (req, res) => {
 
 export const home = (req, res) => {
 
-    const token = req.headers.authorization.split(" ")[1];
+    const token = req.headers.authorization?.split(" ")[1];
     try {
         if (!token)
             res.status(401).json({ message: "No token in request" })
@@ -52,7 +54,8 @@ export const signup = async (req, res) => {
 
     const { name, email, password } = req.body;
     try {
-
+        if (!email || !password || !name)
+            return res.status(400).json({ message: "Incomplete request" })
         const existingUser = await User.findOne({ email })
         if (existingUser) return res.status(400).json({ message: "User already exists" })
 
