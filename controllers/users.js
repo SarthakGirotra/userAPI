@@ -24,7 +24,7 @@ export const login = async (req, res) => {
 
 export const home = (req, res) => {
 
-    const token = req.headers?.jwt;
+    const token = req.headers.authorization.split(" ")[1];
     try {
         if (!token)
             res.status(401).json({ message: "No token in request" })
